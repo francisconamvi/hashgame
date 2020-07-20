@@ -14,7 +14,7 @@ def get_back(clientsocket):
         full_msg += msg
         if(len(full_msg)-HEADERSIZE == msglen):
             d = pickle.loads(full_msg[HEADERSIZE:])
-            #tuple of x and y of player 2
+            #tuple of x and y of player
             return d
             new_msg = True
             full_msg = b''
@@ -27,59 +27,67 @@ def print_board(board):
 def inicialize_board():
     return [[' ',' ',' '] for x in range(3)]
 
-def start_game(clientsocket, address):
+def start_game(cs1, cs2):
     board = inicialize_board()
-    print("Give X and Y position")
-    print("Exemple -> Player 1: 1 1")
-
     while True:
-        print()
-        print_board(board)
-        player_input = tuple(map(int, input("Player 1: ").split()))
-        while(not set_board(board, player_input, 1)):
-            print("Invalid position. Try again!")
-            player_input = tuple(map(int, input("Player 1: ").split()))
-
-        if(gameover(board)):
-            msg = "Player 1 wins!"
-            print(msg)
-            print_board(board)
-
-            msg = pickle.dumps(msg)
-            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-            clientsocket.send(msg)
-            time.sleep(1)
-
-            msg = pickle.dumps(board)
-            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-            clientsocket.send(msg)
-            time.sleep(1)
-
-            break
-        
-        #send actual board to player2
         msg = pickle.dumps(board)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-        clientsocket.send(msg)
-        set_board(board, get_back(clientsocket), 2)
-
+        cs1.send(msg)
+        set_board(board, get_back(cs1), 1)
         if(gameover(board)):
-            msg = "Player 2 wins!"
-            print(msg)
-            print_board(board)
-
+            msg = "You win!"
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-            clientsocket.send(msg)
+            cs1.send(msg)
             time.sleep(1)
 
             msg = pickle.dumps(board)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-            clientsocket.send(msg)
+            cs1.send(msg)
+            time.sleep(1)
+
+            msg = "Player 1 wins :("
+            msg = pickle.dumps(msg)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs2.send(msg)
+            time.sleep(1)
+
+            msg = pickle.dumps(board)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs2.send(msg)
             time.sleep(1)
 
             break
-        
+    
+        msg = pickle.dumps(board)
+        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+        cs2.send(msg)
+        set_board(board, get_back(cs2), 2)
+        if(gameover(board)):
+            msg = "You win!"
+            msg = pickle.dumps(msg)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs2.send(msg)
+            time.sleep(1)
+
+            msg = pickle.dumps(board)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs2.send(msg)
+            time.sleep(1)
+
+            msg = "Player 2 wins :("
+            msg = pickle.dumps(msg)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs1.send(msg)
+            time.sleep(1)
+
+            msg = pickle.dumps(board)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs1.send(msg)
+            time.sleep(1)
+
+            break
+
 
 def set_board(board, player_input, player):
     if(len(player_input) != 2):
