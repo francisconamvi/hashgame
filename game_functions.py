@@ -30,9 +30,17 @@ def inicialize_board():
 def start_game(cs1, cs2):
     board = inicialize_board()
     while True:
+        msg = "Make a move"
+        msg = pickle.dumps(msg)
+        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+        cs1.send(msg)
+        time.sleep(0.5)
+
         msg = pickle.dumps(board)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs1.send(msg)
+        time.sleep(0.5)
+
         set_board(board, get_back(cs1), 1)
         if(gameover(board)):
             msg = "You win!"
@@ -58,10 +66,25 @@ def start_game(cs1, cs2):
             time.sleep(1)
 
             break
+        
+        else:
+            msg = "Wait for player 2 move"
+            msg = pickle.dumps(msg)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs1.send(msg)
+            time.sleep(0.5)
     
+        msg = "Make a move"
+        msg = pickle.dumps(msg)
+        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+        cs2.send(msg)
+        time.sleep(0.5)
+
         msg = pickle.dumps(board)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs2.send(msg)
+        time.sleep(0.5)
+
         set_board(board, get_back(cs2), 2)
         if(gameover(board)):
             msg = "You win!"
@@ -87,6 +110,13 @@ def start_game(cs1, cs2):
             time.sleep(1)
 
             break
+
+        else:
+            msg = "Wait for player 1 move"
+            msg = pickle.dumps(msg)
+            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            cs2.send(msg)
+            time.sleep(0.5)
 
 
 def set_board(board, player_input, player):
@@ -125,3 +155,12 @@ def gameover(board):
 
     return False
 
+def p1_turn(board):
+    count = 0
+    for row in board:
+        for element in row:
+            if element != ' ':
+                count += 1
+    if count % 2 == 0:
+        return True
+    return False
