@@ -7,7 +7,7 @@ from gui import *
 #sockets configuration
 HEADERSIZE = 10
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((socket.gethostname(),1234))
+s.connect((socket.gethostname(),1235))
 
 hash_gui = gui()
 
@@ -39,11 +39,16 @@ while True:
                 if(gameover(board)):
                     hash_gui.window.mainloop()
                     quit()
-                player_input = tuple(map(int, input("Your move: ").split()))
+                hash_gui.enable_buttons()
+                hash_gui.window.wait_variable(hash_gui.last_pos[0])
+                player_input = (hash_gui.last_pos[0].get(), hash_gui.last_pos[1].get())
+                print(player_input)
                 while(not set_board(board, player_input, player)):
-                    print("Invalid position. Try again!")
-                    hash_gui.set_status("Invalid position. Try again!")
-                    player_input = tuple(map(int, input("Your move: ").split()))
+                    hash_gui.set_status("Invalid move. Try again")
+                    hash_gui.window.wait_variable(hash_gui.last_pos[0])
+                    player_input = (hash_gui.last_pos[0].get(), hash_gui.last_pos[1].get())
+                    print(player_input)
+                hash_gui.disable_buttons()
                 hash_gui.update_board(board)
                 #send to server player input
                 msg = pickle.dumps(player_input)

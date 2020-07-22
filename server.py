@@ -5,7 +5,7 @@ from game_functions import *
 #sockets configuration
 HEADERSIZE = 10
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((socket.gethostname(), 1234))
+s.bind((socket.gethostname(), 1235))
 s.listen(5)
 
 while True:
