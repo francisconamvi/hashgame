@@ -34,12 +34,12 @@ def start_game(cs1, cs2):
         msg = pickle.dumps(msg)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs1.send(msg)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         msg = pickle.dumps(board)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs1.send(msg)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         set_board(board, get_back(cs1), 1)
         if(gameover(board)):
@@ -47,23 +47,23 @@ def start_game(cs1, cs2):
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs1.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = pickle.dumps(board)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs1.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = "Player 1 wins :("
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs2.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = pickle.dumps(board)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs2.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             break
         
@@ -72,18 +72,18 @@ def start_game(cs1, cs2):
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs1.send(msg)
-            time.sleep(0.5)
+            time.sleep(0.1)
     
         msg = "Make a move"
         msg = pickle.dumps(msg)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs2.send(msg)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         msg = pickle.dumps(board)
         msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
         cs2.send(msg)
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         set_board(board, get_back(cs2), 2)
         if(gameover(board)):
@@ -91,23 +91,23 @@ def start_game(cs1, cs2):
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs2.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = pickle.dumps(board)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs2.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = "Player 2 wins :("
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs1.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             msg = pickle.dumps(board)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs1.send(msg)
-            time.sleep(1)
+            time.sleep(0.1)
 
             break
 
@@ -116,7 +116,7 @@ def start_game(cs1, cs2):
             msg = pickle.dumps(msg)
             msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
             cs2.send(msg)
-            time.sleep(0.5)
+            time.sleep(0.1)
 
 
 def set_board(board, player_input, player):

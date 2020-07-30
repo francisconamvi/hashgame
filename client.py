@@ -26,10 +26,8 @@ while True:
         if(len(full_msg)-HEADERSIZE == msglen):
             d = pickle.loads(full_msg[HEADERSIZE:])
             if(isinstance(d, str)):
-                print(d)
                 hash_gui.set_status(d)
             elif(isinstance(d, list)):
-                print_board(d)
                 board = d
                 if(p1_turn(board)):
                     player = 1
@@ -42,12 +40,10 @@ while True:
                 hash_gui.enable_buttons()
                 hash_gui.window.wait_variable(hash_gui.last_pos[0])
                 player_input = (hash_gui.last_pos[0].get(), hash_gui.last_pos[1].get())
-                print(player_input)
                 while(not set_board(board, player_input, player)):
                     hash_gui.set_status("Invalid move. Try again")
                     hash_gui.window.wait_variable(hash_gui.last_pos[0])
                     player_input = (hash_gui.last_pos[0].get(), hash_gui.last_pos[1].get())
-                    print(player_input)
                 hash_gui.disable_buttons()
                 hash_gui.update_board(board)
                 #send to server player input

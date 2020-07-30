@@ -13,45 +13,22 @@ while True:
     clientsocket1, address1 = s.accept()
     print(f"Connection from {address1} has been established!")
 
-    msg = "Welcome to the server!\nWaiting for player 2"
+
+    msg = "Waiting for player 2"
     msg = pickle.dumps(msg)
     msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
     clientsocket1.send(msg)
-    time.sleep(0.5)
-
-    # msg = "How to play:\nGive X and Y position\nExemple -> Player 1: 1 1"
-    # msg = pickle.dumps(msg)
-    # msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-    # clientsocket1.send(msg)
-    # time.sleep(1)
+    time.sleep(0.1)
 
     print("Waiting for player 2 connection")
     clientsocket2, address2 = s.accept()
     print(f"Connection from {address2} has been established!")
 
-    msg = "Welcome to the server!"
-    msg = pickle.dumps(msg)
-    msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-    clientsocket2.send(msg)
-    time.sleep(0.5)
-
-    # msg = "How to play:\nGive X and Y position\nExemple -> Player 2: 1 1"
-    # msg = pickle.dumps(msg)
-    # msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-    # clientsocket2.send(msg)
-    # time.sleep(1)
-    
-    # msg = "The game will start"
-    # msg = pickle.dumps(msg)
-    # msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-    # clientsocket1.send(msg)
-    # time.sleep(1)
-
     msg = "Wait for player 1 move"
     msg = pickle.dumps(msg)
     msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
     clientsocket2.send(msg)
-    time.sleep(0.5)
+    time.sleep(0.1)
 
     start_game(clientsocket1, clientsocket2)
     if(input("Go to next game? y or n: ")=="n"):
